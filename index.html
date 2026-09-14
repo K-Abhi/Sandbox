@@ -1,82 +1,432 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Data Table</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title> IBM Integration - AI Agents </title>
+<meta name="description" content="IBM Integration : AI Agents Adoption Dashboard ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+:root {
+  --blue: #0f62fe;
+  --blue-90: #002d9c;
+  --blue-100: #001141;
+  --text: #161616;
+  --muted: #525252;
+  --border: #d0d0d0;
+  --light: #f4f4f4;
+  --white: #fff;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--white);
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+.container { width: min(1240px, 90vw); margin: 0 auto; }
 
-  <style>
-    body {
-      background: #f4f6f8;
-      padding: 2rem 1rem 3rem;
-    }
-    .page-wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .card {
-      border: 0;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    }
-    h1 { font-weight: 700; }
-    .table thead th { white-space: nowrap; }
-  </style>
+.ibm-topline { height: 4px; background: var(--blue); }
+
+.site-header {
+  height: 72px;
+  background: #000;
+  color: #fff;
+}
+.header-inner {
+  width: min(1400px, 92vw);
+  height: 100%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { display:flex; align-items:center; gap:15px; }
+.ibm-wordmark {
+  font-family: Arial, sans-serif;
+  font-size: 31px;
+  font-weight: 900;
+  letter-spacing: -4px;
+  line-height: 1;
+  position: relative;
+}
+.ibm-wordmark::after {
+  content:"";
+  position:absolute;
+  left:0; right:0; top:11px; height:2px;
+  background: repeating-linear-gradient(to right,#fff 0,#fff 5px,transparent 5px,transparent 8px);
+}
+.brand-divider { width:1px; height:25px; background:#6f6f6f; }
+.brand-name { font-size:15px; letter-spacing:.2px; }
+.header-meta {
+  display:flex; align-items:center; gap:12px;
+  font-size:12px; color:#c6c6c6;
+  text-transform:uppercase; letter-spacing:1px;
+}
+.meta-dot { width:4px; height:4px; border-radius:50%; background:var(--blue); }
+
+.executive-hero {
+  min-height: 535px;
+  background: #f4f4f4;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.hero-grid-pattern {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(15,98,254,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15,98,254,.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(90deg, black 0%, black 58%, transparent 92%);
+}
+.hero-grid-pattern::after {
+  content:"";
+  position:absolute;
+  width:440px; height:440px;
+  right:-120px; top:60px;
+  border:1px solid rgba(15,98,254,.16);
+  box-shadow:0 0 0 56px rgba(15,98,254,.035),
+             0 0 0 112px rgba(15,98,254,.025);
+  transform:rotate(45deg);
+}
+.hero-content { position:relative; padding:88px 0 72px; }
+.eyebrow {
+  color:#4589ff;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:1.8px;
+  margin-bottom:22px;
+}
+.eyebrow.dark { color:var(--blue); }
+.hero-layout {
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 240px;
+  gap:80px;
+  align-items:end;
+}
+h1 {
+  font-size:clamp(45px, 5.6vw, 76px);
+  line-height:1.02;
+  font-weight:400;
+  letter-spacing:-2.8px;
+  margin:0;
+  max-width:980px;
+}
+h1 span { color:var(--blue); }
+.hero-copy {
+  max-width:790px;
+  margin:32px 0 0;
+  color:#393939;
+  font-size:20px;
+  line-height:1.55;
+}
+.hero-index {
+  border-left:1px solid var(--border);
+  padding-left:28px;
+  margin-bottom:4px;
+}
+.index-label { font-size:11px; letter-spacing:1.4px; color:var(--muted); }
+.index-number {
+  color:var(--blue);
+  font-size:76px;
+  line-height:.95;
+  font-weight:400;
+  margin:12px 0 8px;
+  letter-spacing:-4px;
+}
+.index-caption { font-size:13px; color:var(--muted); }
+
+.insight-strip {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-left:1px solid var(--border);
+  border-right:1px solid var(--border);
+  background:#fff;
+}
+.insight-item {
+  min-height:138px;
+  padding:28px 30px;
+  border-right:1px solid var(--border);
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:14px;
+}
+.insight-item:last-child { border-right:0; }
+.insight-number {
+  color:var(--blue);
+  font-size:13px;
+  font-weight:600;
+}
+.insight-item strong { font-size:17px; font-weight:600; }
+.insight-item p { margin:7px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
+
+.portfolio-section { background:#f4f4f4; padding:90px 0 100px; }
+.section-heading {
+  display:flex; justify-content:space-between; align-items:end;
+  gap:40px; margin-bottom:36px;
+}
+.section-heading h2, .decision-grid h2 {
+  margin:0;
+  font-size:42px;
+  line-height:1.08;
+  font-weight:400;
+  letter-spacing:-1.4px;
+}
+.section-heading > p { max-width:330px; color:var(--muted); margin:0 0 4px; font-size:14px; }
+
+.report-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:24px;
+}
+.report-card {
+  background:#fff;
+  min-height:435px;
+  border:1px solid var(--border);
+  border-top:5px solid var(--blue);
+  padding:30px 32px 0;
+  display:flex; flex-direction:column;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.report-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 12px 28px rgba(0,0,0,.10);
+  border-color:#8d8d8d;
+}
+.report-card-b2b { border-top-color:#1192e8; }
+.card-top { display:flex; justify-content:space-between; align-items:start; }
+.agent-mark {
+  background:#e5f1ff;
+  color:var(--blue);
+  width:64px; height:64px;
+  display:flex; flex-direction:column; justify-content:center;
+  padding-left:12px;
+  font-size:18px; font-weight:600;
+  line-height:1;
+}
+.agent-mark span {
+  font-size:10px; margin-top:7px; letter-spacing:1px;
+}
+.card-arrow { color:var(--blue); font-size:25px; }
+.card-content { flex:1; padding-top:45px; }
+.card-kicker { font-size:11px; letter-spacing:1.5px; font-weight:600; color:var(--muted); margin-bottom:12px; }
+.card-content h3 {
+  font-size:34px; line-height:1.08; font-weight:400;
+  letter-spacing:-1px; margin:0 0 18px;
+}
+.card-content p {
+  max-width:620px; color:var(--muted);
+  font-size:15px; line-height:1.6; margin:0;
+}
+.card-footer {
+  border-top:1px solid var(--border);
+  min-height:67px;
+  display:flex; align-items:center; gap:14px;
+  font-size:13px; font-weight:600;
+}
+.footer-line { height:1px; background:var(--blue); width:52px; }
+
+.decision-section { padding:90px 0 100px; background:#fff; }
+.decision-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:100px;
+  align-items:start;
+}
+.decision-copy > p {
+  font-size:22px; line-height:1.5; margin:0;
+  max-width:600px;
+}
+.signal-row {
+  display:flex; gap:26px; margin-top:45px;
+  border-top:1px solid var(--border);
+  padding-top:20px;
+}
+.signal-row > div { display:flex; align-items:center; gap:9px; font-size:12px; color:var(--muted); }
+.signal-bar { width:22px; height:4px; background:var(--blue); }
+.signal-row > div:nth-child(2) .signal-bar { width:34px; }
+.signal-row > div:nth-child(3) .signal-bar { width:48px; }
+
+.site-footer { background:#161616; color:#c6c6c6; padding:25px 0; }
+.footer-inner { display:flex; justify-content:space-between; gap:20px; align-items:center; font-size:11px; letter-spacing:.3px; }
+.footer-brand { color:#fff; display:flex; align-items:center; gap:12px; }
+.footer-brand .ibm-wordmark { font-size:25px; }
+
+@media (max-width: 850px) {
+  .header-meta { display:none; }
+  .hero-content { padding:65px 0; }
+  .hero-layout, .decision-grid { grid-template-columns:1fr; gap:45px; }
+  .hero-index { border-left:0; border-top:1px solid var(--border); padding:20px 0 0; }
+  .insight-strip, .report-grid { grid-template-columns:1fr; }
+  .insight-item { border-right:0; border-bottom:1px solid var(--border); }
+  .insight-item:last-child { border-bottom:0; }
+  .section-heading { display:block; }
+  .section-heading > p { margin-top:16px; }
+  .portfolio-section, .decision-section { padding:65px 0; }
+  .footer-inner { align-items:flex-start; flex-direction:column; }
+}
+
+</style>
 </head>
 <body>
-  <div class="page-wrap">
-    <div class="mb-4">
-      <h1 class="mb-1">Your table title</h1>
-      <p class="text-muted mb-0">Search, sort, and filter the dataset.</p>
-    </div>
 
-    <div class="card p-3 p-md-4">
-      <div class="table-responsive">
-        <table id="data-table" class="table table-striped table-hover nowrap" style="width:100%">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-      </div>
+<div class="ibm-topline"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="AI Agents Adoption Dashboard Home">
+      <span class="brand-name">IBM</span>
+      <span class="brand-divider"></span>
+      <span class="brand-name">Integration</span>
+    </a>
+    <div class="header-meta">
+      <span>AI Adoption Intelligence</span>
+      <span class="meta-dot"></span>
+      <span>GTM Dashboard</span>
     </div>
   </div>
+</header>
 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<main>
+  <section class="executive-hero">
+    <div class="hero-grid-pattern"></div>
+    <div class="container hero-content">
+      <div class="eyebrow">IBM INTEGRATION</div>
+      <div class="hero-layout">
+        <div>
+          <h1>Making AI Agent Adoption<br><span>visible and measurable.</span></h1>
+          <p class="hero-copy">
+            The dashboard is an initial attempt at tracking the adoption of three AI agents within the IBM Integration portfolio—
+            <strong>Integration Agent</strong>, <strong>Observability Agent</strong>,
+            and <strong>B2B Agent</strong>—with the ultimate objective of turning these signals in GTM intelligence and activation opportunities.
+          </p>
+        </div>
+      <!--  <div class="hero-index">
+          <div class="index-label">PORTFOLIO VIEW</div>
+          <div class="index-number">03</div>
+          <div class="index-caption">AI agents tracked</div>
+        </div> -->
+      </div>
+    </div>
+  </section>
 
-  <script>
-    Papa.parse("data.csv", {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function (results) {
-        const rows = results.data;
-        if (!rows.length) return;
+ <!-- <section class="container insight-strip">
+    <div class="insight-item">
+      <span class="insight-number">01</span>
+      <div>
+        <strong>See adoption</strong>
+        <p>Understand where AI experiences are gaining traction across accounts.</p>
+      </div>
+    </div>
+    <div class="insight-item">
+      <span class="insight-number">02</span>
+      <div>
+        <strong>Identify gaps</strong>
+        <p>Surface accounts and environments where activation can be accelerated.</p>
+      </div>
+    </div>
+    <div class="insight-item">
+      <span class="insight-number">03</span>
+      <div>
+        <strong>Drive action</strong>
+        <p>Use adoption intelligence to inform partner, sales and GTM motions.</p>
+      </div>
+    </div>
+  </section> -->
 
-        const columns = Object.keys(rows[0]).map(key => ({
-          title: key,
-          data: key
-        }));
+  <section class="portfolio-section">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow dark"></div>
+          <h2>AI AGENT PORTFOLIO</h2>
+        </div>
+        <!--<p>Two focused views. One portfolio-level perspective.</p> -->
+      </div>
 
-        new DataTable("#data-table", {
-          data: rows,
-          columns: columns,
-          pageLength: 25,
-          lengthMenu: [10, 25, 50, 100],
-          responsive: true,
-          order: [],
-          language: {
-            search: "Filter:",
-            searchPlaceholder: "Type to search…"
-          }
-        });
-      }
-    });
-  </script>
+      <div class="report-grid">
+        <a class="report-card" href="integration-observability.html">
+          <div class="card-top">
+            <div class="agent-mark">AI<span>01</span></div>
+            <div class="card-arrow">↗</div>
+          </div>
+          <div class="card-content">
+            <div class="card-kicker">DEVELOPMENT + OPERATIONS</div>
+            <h3>Integration Agent<br>+ Observability Agent</h3>
+            <!--<p>
+              A combined view of AI-assisted integration development and
+              operational intelligence—from guided creation to faster
+              troubleshooting and remediation.
+            </p>-->
+          </div>
+          <div class="card-footer">
+            <span>View adoption report</span>
+            <span class="footer-line"></span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <a class="report-card report-card-b2b" href="b2b-agent.html">
+          <div class="card-top">
+            <div class="agent-mark">B2B<span>02</span></div>
+            <div class="card-arrow">↗</div>
+          </div>
+          <div class="card-content">
+            <div class="card-kicker">PARTNER ECOSYSTEMS</div>
+            <h3>B2B Agent</h3>
+          <!--  <p>
+              A focused view of AI adoption across B2B operations, helping
+              teams understand where intelligent assistance is becoming part
+              of partner and transaction workflows.
+            </p> -->
+          </div>
+          <div class="card-footer">
+            <span>View adoption report</span>
+            <span class="footer-line"></span>
+            <span>→</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+<!--
+  <section class="decision-section">
+    <div class="container decision-grid">
+      <div>
+        <div class="eyebrow dark">WHY THIS VIEW MATTERS</div>
+        <h2>From product usage<br>to GTM signal.</h2>
+      </div>
+      <div class="decision-copy">
+        <p>
+          Adoption is more than a usage metric. It is an indicator of
+          <strong>customer readiness, product value realization and future
+          expansion potential.</strong>
+        </p>
+        <div class="signal-row">
+          <div><span class="signal-bar"></span><span>Adoption</span></div>
+          <div><span class="signal-bar"></span><span>Activation</span></div>
+          <div><span class="signal-bar"></span><span>Expansion</span></div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand"><span class="brand-name">IBM</span> 
+      <!--<span>Integration</span> -->
+    </div>
+    <div>AI Adoption Intelligence · Internal GTM Report</div>
+  </div>
+</footer>
+
 </body>
 </html>
